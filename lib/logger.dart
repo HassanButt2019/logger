@@ -66,6 +66,9 @@ void logApiResponse({
   NetworkLogManager().log(apiData);
 }
 
+
+
+
 class NetwordLogger extends StatefulWidget {
   const NetwordLogger({super.key});
 
@@ -74,6 +77,50 @@ class NetwordLogger extends StatefulWidget {
 }
 
 class _NetwordLoggerState extends State<NetwordLogger> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final overlay = Overlay.of(context, rootOverlay: true);
+      if (overlay != null && !DraggableLoggerOverlay.isInserted) {
+        overlay.insert(DraggableLoggerOverlay.instance);
+        DraggableLoggerOverlay.isInserted = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    if (DraggableLoggerOverlay.isInserted) {
+      DraggableLoggerOverlay.instance.remove();
+      DraggableLoggerOverlay.isInserted = false;
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.shrink(); // Does not render anything itself
+  }
+}
+
+
+class DraggableLoggerOverlay {
+  static bool isInserted = false;
+
+  static final OverlayEntry instance = OverlayEntry(
+    builder: (context) => const _DraggableLoggerButton(),
+  );
+}
+
+class _DraggableLoggerButton extends StatefulWidget {
+  const _DraggableLoggerButton();
+
+  @override
+  State<_DraggableLoggerButton> createState() => _DraggableLoggerButtonState();
+}
+
+class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
   double top = 100;
   double left = 20;
 
@@ -100,17 +147,16 @@ class _NetwordLoggerState extends State<NetwordLogger> {
     return FloatingActionButton(
       backgroundColor: Colors.deepPurple,
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const ApiListScreen(),
-          ),
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const ApiListScreen()),
         );
       },
       child: const Icon(Icons.api),
     );
   }
 }
+
+
 
 // import 'package:flutter/material.dart';
 // import '../core/log_manager.dart';
