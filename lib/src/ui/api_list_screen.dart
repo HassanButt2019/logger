@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../core/log_manager.dart';
 import 'api_response_screen.dart';
+
 class ApiListScreen extends StatefulWidget {
   const ApiListScreen({super.key});
 
@@ -12,6 +13,7 @@ class ApiListScreen extends StatefulWidget {
 class _ApiListScreenState extends State<ApiListScreen> {
   String searchQuery = '';
   String? selectedMethod;
+  final List<String> methods = ['GET', 'POST', 'PUT', 'DELETE'];
   final logs = NetworkLogManager().logs;
 
   @override
@@ -31,41 +33,52 @@ class _ApiListScreenState extends State<ApiListScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: TextField(
-              decoration: const InputDecoration(labelText: 'Search', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Search',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
               onChanged: (value) => setState(() => searchQuery = value),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Filter by Method'),
-              value: selectedMethod,
-              items: ['GET', 'POST', 'PUT', 'DELETE']
-                  .map((method) => DropdownMenuItem(value: method, child: Text(method)))
-                  .toList(),
-              onChanged: (value) => setState(() => selectedMethod = value),
-              isExpanded: true,
-              hint: const Text('Select Method'),
+            child: Wrap(
+              spacing: 8.0,
+              children: methods.map((method) {
+                final isSelected = selectedMethod == method;
+                return FilterChip(
+                  label: Text(method),
+                  selected: isSelected,
+                  onSelected: (bool selected) {
+                    setState(() {
+                      selectedMethod = selected ? method : null;
+                    });
+                  },
+                );
+              }).toList(),
             ),
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredLogs.length,
-              itemBuilder: (context, index) {
-                final log = filteredLogs[index];
-                return ListTile(
-                  title: Text('${log.method} - ${log.url}'),
-                  subtitle: Text('Status: ${log.statusCode} • Time: ${log.timestamp}'),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ApiResponseScreen(api: log),
-                    ),
+            child: filteredLogs.isEmpty
+                ? const Center(child: Text('No logs found.'))
+                : ListView.builder(
+                    itemCount: filteredLogs.length,
+                    itemBuilder: (context, index) {
+                      final log = filteredLogs[index];
+                      return ListTile(
+                        title: Text('${log.method} - ${log.url}'),
+                        subtitle: Text('Status: ${log.statusCode} • Time: ${log.timestamp}'),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ApiResponseScreen(api: log),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

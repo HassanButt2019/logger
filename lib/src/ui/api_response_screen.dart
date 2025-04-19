@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../core/log_manager.dart';
 import '../utils/json_pretifier.dart';
-import '../models/api_test_data.dart';
+import '../models/api_test_data.dart';// lib/src/ui/api_response_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
 
@@ -18,9 +21,8 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final displayedJson = prettifyJson
-        ? JsonPrettifier.pretty(widget.api.responseBody ?? '')
-        : widget.api.responseBody ?? '';
+    final rawResponse = widget.api.responseBody ?? '';
+    final displayedJson = prettifyJson ? JsonPrettifier.pretty(rawResponse) : rawResponse;
 
     return Scaffold(
       appBar: AppBar(
@@ -28,15 +30,22 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
         actions: [
           Row(
             children: [
-              const Text("Prettify"),
+              const Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Text("Prettify"),
+              ),
               Switch(
                 value: prettifyJson,
-                onChanged: (val) => setState(() => prettifyJson = val),
+                onChanged: (val) {
+                  setState(() {
+                    prettifyJson = val;
+                  });
+                },
               ),
               IconButton(
                 icon: const Icon(Icons.copy),
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: widget.api.responseBody ?? ''));
+                  Clipboard.setData(ClipboardData(text: rawResponse));
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Response copied to clipboard')),
                   );
