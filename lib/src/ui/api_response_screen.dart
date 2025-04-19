@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import '../core/log_manager.dart';
 import '../utils/json_pretifier.dart';
 import '../models/api_test_data.dart';// lib/src/ui/api_response_screen.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
@@ -22,7 +20,9 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
   @override
   Widget build(BuildContext context) {
     final rawResponse = widget.api.responseBody ?? '';
-    final displayedJson = prettifyJson ? JsonPrettifier.pretty(rawResponse) : rawResponse;
+    final displayedJson = prettifyJson
+        ? JsonPrettifier.pretty(rawResponse)
+        : rawResponse;
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,7 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
           Row(
             children: [
               const Padding(
-                padding: EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 4.0),
                 child: Text("Prettify"),
               ),
               Switch(
