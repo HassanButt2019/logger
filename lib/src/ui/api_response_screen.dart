@@ -19,13 +19,11 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
   @override
   Widget build(BuildContext context) {
     final rawResponse = widget.api.responseBody ?? '';
-    final rawRequest = widget.api.requestBody ?? '';
 
     // This value will change every time `prettifyJson` changes
     final responseText =
         prettifyJson ? JsonPrettifier.pretty(rawResponse) : rawResponse;
-    final requestTest =
-        prettifyJson ? JsonPrettifier.pretty(rawRequest) : rawRequest;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('API Response'),
@@ -73,7 +71,7 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
             const Text('Request Body:',
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            SelectableText(requestTest),
+            SelectableText(responseText),
             const SizedBox(height: 16),
             const Text('Response Body:',
                 style: TextStyle(fontWeight: FontWeight.bold)),
