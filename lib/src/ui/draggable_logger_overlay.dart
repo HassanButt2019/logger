@@ -41,7 +41,7 @@ class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
 
   Widget _buildButton() {
     return FloatingActionButton(
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Colors.indigo,
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const ApiListScreen()),
