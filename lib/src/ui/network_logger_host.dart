@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'draggable_logger_overlay.dart';
 
-class NetwordLoggerHost extends StatefulWidget {
-  const NetwordLoggerHost({super.key});
+class NetworkLoggerHost extends StatefulWidget {
+  const NetworkLoggerHost({super.key});
 
   @override
-  State<NetwordLoggerHost> createState() => _NetwordLoggerHostState();
+  State<NetworkLoggerHost> createState() => _NetworkLoggerHostState();
 }
 
-class _NetwordLoggerHostState extends State<NetwordLoggerHost> {
+class _NetworkLoggerHostState extends State<NetworkLoggerHost> {
   @override
   void initState() {
     super.initState();
