@@ -3,6 +3,7 @@ library logger;
 export 'src/core/log_manager.dart';
 export 'src/models/api_test_data.dart';
 export 'src/ui/draggable_logger_overlay.dart';
+export 'src/core/logger_controller.dart'; // Required to expose logApiResponse
 
 /// Optional entry point for host widget if needed
 export 'src/ui/network_logger_host.dart';
