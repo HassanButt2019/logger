@@ -6,7 +6,6 @@ class ApiTestData {
   final String? requestBody;
   final String? responseBody;
   final DateTime timestamp;
-  final int? durationMs; // Duration in milliseconds
 
   ApiTestData({
     required this.method,
@@ -15,8 +14,5 @@ class ApiTestData {
     this.headers,
     this.requestBody,
     this.responseBody,
-    DateTime? timestamp,
-    this.durationMs,
-  }) : timestamp = timestamp ?? DateTime.now();
-
+  }) : timestamp = DateTime.now();
 }

@@ -8,7 +8,7 @@ class ProfilerTimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final logs = NetworkLogManager().logs;
-    final maxDuration = logs.map((e) => e.durationMs ?? 0).fold<int>(0, (a, b) => a > b ? a : b);
+    final maxDuration = 10;
 
     return Scaffold(
       appBar: AppBar(title: const Text('API Timeline Profiler')),
@@ -18,7 +18,7 @@ class ProfilerTimelineScreen extends StatelessWidget {
               itemCount: logs.length,
               itemBuilder: (context, index) {
                 final log = logs[index];
-                final duration = log.durationMs ?? 0;
+                final duration =  0;
                 final barWidth = (maxDuration > 0) ? (duration / maxDuration * 200) : 0.0;
 
                 return ListTile(

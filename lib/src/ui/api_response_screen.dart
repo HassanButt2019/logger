@@ -63,9 +63,6 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
             const SizedBox(height: 8),
             Text('Timestamp: ${widget.api.timestamp}'),
             const SizedBox(height: 8),
-            if (widget.api.durationMs != null)
-              Text('Duration: ${widget.api.durationMs} ms'),
-            const SizedBox(height: 16),
             const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             SelectableText(responseText),
