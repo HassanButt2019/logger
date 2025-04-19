@@ -14,7 +14,7 @@ class _NetworkLoggerHostState extends State<NetworkLoggerHost> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final overlay = Overlay.of(context, rootOverlay: true);
-      if (overlay != null && !DraggableLoggerOverlay.isInserted) {
+      if (!DraggableLoggerOverlay.isInserted) {
         overlay.insert(DraggableLoggerOverlay.instance);
         DraggableLoggerOverlay.isInserted = true;
       }
