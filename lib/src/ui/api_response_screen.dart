@@ -1,32 +1,68 @@
+// lib/src/ui/api_response_screen.dart
 import 'package:flutter/material.dart';
-import '../../src/models/api_test_data.dart';
-
-class ApiResponseScreen extends StatelessWidget {
+import 'package:flutter/services.dart';
+import '../core/log_manager.dart';
+import '../utils/json_pretifier.dart';
+import '../models/api_test_data.dart';
+class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
 
   const ApiResponseScreen({super.key, required this.api});
 
   @override
+  State<ApiResponseScreen> createState() => _ApiResponseScreenState();
+}
+
+class _ApiResponseScreenState extends State<ApiResponseScreen> {
+  bool prettifyJson = true;
+
+  @override
   Widget build(BuildContext context) {
+    final displayedJson = prettifyJson
+        ? JsonPrettifier.pretty(widget.api.responseBody ?? '')
+        : widget.api.responseBody ?? '';
+
     return Scaffold(
-      appBar: AppBar(title: const Text('API Response')),
+      appBar: AppBar(
+        title: const Text('API Response'),
+        actions: [
+          Row(
+            children: [
+              const Text("Prettify"),
+              Switch(
+                value: prettifyJson,
+                onChanged: (val) => setState(() => prettifyJson = val),
+              ),
+              IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: widget.api.responseBody ?? ''));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Response copied to clipboard')),
+                  );
+                },
+              ),
+            ],
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: SelectableText(
-          '''
-Method: ${api.method}
-URL: ${api.url}
-Status Code: ${api.statusCode ?? 'N/A'}
-
-Headers:
-${api.headers?.entries.map((e) => '${e.key}: ${e.value}').join('\n') ?? 'N/A'}
-
-Request Body:
-${api.requestBody ?? 'N/A'}
-
-Response Body:
-${api.responseBody ?? 'N/A'}
-''',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('URL: ${widget.api.url}', style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('Method: ${widget.api.method}'),
+            const SizedBox(height: 8),
+            Text('Status: ${widget.api.statusCode}'),
+            const SizedBox(height: 8),
+            Text('Timestamp: ${widget.api.timestamp}'),
+            const SizedBox(height: 16),
+            const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            SelectableText(displayedJson),
+          ],
         ),
       ),
     );
