@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netword_logger/netword_logger.dart';
+import 'package:logger/logger.dart';
 
 void main() {
   runApp(const MyApp());
