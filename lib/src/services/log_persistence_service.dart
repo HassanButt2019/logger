@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import '../models/api_test_data.dart';
+import 'package:logger/src/core/log_manager.dart';
+
 
 class LogPersistenceService {
   Future<void> saveLogs(List<ApiTestData> logs) async {
