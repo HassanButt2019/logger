@@ -1,10 +1,8 @@
 // lib/src/ui/api_response_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../core/log_manager.dart';
 import '../utils/json_pretifier.dart';
 import '../models/api_test_data.dart';// lib/src/ui/api_response_screen.dart
-
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
 
@@ -20,7 +18,9 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
   @override
   Widget build(BuildContext context) {
     final rawResponse = widget.api.responseBody ?? '';
-    final displayedJson = prettifyJson
+
+    // This value will change every time `prettifyJson` changes
+    final responseText = prettifyJson
         ? JsonPrettifier.pretty(rawResponse)
         : rawResponse;
 
@@ -30,24 +30,23 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
         actions: [
           Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 4.0),
-                child: Text("Prettify"),
-              ),
+              const Text("Prettify"),
               Switch(
                 value: prettifyJson,
-                onChanged: (val) {
+                onChanged: (value) {
                   setState(() {
-                    prettifyJson = val;
+                    prettifyJson = value;
                   });
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.copy),
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: rawResponse));
+                tooltip: 'Copy Response',
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: responseText));
+                  if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Response copied to clipboard')),
+                    const SnackBar(content: Text('Copied to clipboard')),
                   );
                 },
               ),
@@ -70,7 +69,7 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
             const SizedBox(height: 16),
             const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            SelectableText(displayedJson),
+            SelectableText(responseText),
           ],
         ),
       ),
