@@ -6,7 +6,7 @@ class ApiTestData {
   final String? requestBody;
   final String? responseBody;
   final DateTime timestamp;
-  final int? durationMs; // Duration in milliseconds
+  final int? durationMs;
 
   ApiTestData({
     required this.method,
@@ -18,4 +18,26 @@ class ApiTestData {
     DateTime? timestamp,
     this.durationMs,
   }) : timestamp = timestamp ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+        'method': method,
+        'url': url,
+        'statusCode': statusCode,
+        'headers': headers,
+        'requestBody': requestBody,
+        'responseBody': responseBody,
+        'timestamp': timestamp.toIso8601String(),
+        'durationMs': durationMs,
+      };
+
+  factory ApiTestData.fromJson(Map<String, dynamic> json) => ApiTestData(
+        method: json['method'],
+        url: json['url'],
+        statusCode: json['statusCode'],
+        headers: (json['headers'] as Map?)?.cast<String, String>(),
+        requestBody: json['requestBody'],
+        responseBody: json['responseBody'],
+        timestamp: DateTime.parse(json['timestamp']),
+        durationMs: json['durationMs'],
+      );
 }
