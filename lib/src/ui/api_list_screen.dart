@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../core/log_manager.dart';
 import 'api_response_screen.dart';
-
+import 'profiler_timeline_screen.dart';
 class ApiListScreen extends StatefulWidget {
   const ApiListScreen({super.key});
 
@@ -27,7 +27,21 @@ class _ApiListScreenState extends State<ApiListScreen> {
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('API Logs')),
+      appBar: AppBar(
+        title: const Text('API Logs'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.timeline),
+            tooltip: 'Profiler',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilerTimelineScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/json_pretifier.dart';
 import '../models/api_test_data.dart';// lib/src/ui/api_response_screen.dart
+
+
+
+
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
 
@@ -18,8 +22,6 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
   @override
   Widget build(BuildContext context) {
     final rawResponse = widget.api.responseBody ?? '';
-
-    // This value will change every time `prettifyJson` changes
     final responseText = prettifyJson
         ? JsonPrettifier.pretty(rawResponse)
         : rawResponse;
@@ -33,18 +35,12 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
               const Text("Prettify"),
               Switch(
                 value: prettifyJson,
-                onChanged: (value) {
-                  setState(() {
-                    prettifyJson = value;
-                  });
-                },
+                onChanged: (value) => setState(() => prettifyJson = value),
               ),
               IconButton(
                 icon: const Icon(Icons.copy),
-                tooltip: 'Copy Response',
-                onPressed: () async {
-                  await Clipboard.setData(ClipboardData(text: responseText));
-                  if (!mounted) return;
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: responseText));
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Copied to clipboard')),
                   );
@@ -66,6 +62,9 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
             Text('Status: ${widget.api.statusCode}'),
             const SizedBox(height: 8),
             Text('Timestamp: ${widget.api.timestamp}'),
+            const SizedBox(height: 8),
+            if (widget.api.durationMs != null)
+              Text('Duration: ${widget.api.durationMs} ms'),
             const SizedBox(height: 16),
             const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
