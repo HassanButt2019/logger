@@ -14,7 +14,7 @@ class _ApiListScreenState extends State<ApiListScreen> {
   String searchQuery = '';
   String? selectedMethod;
   final List<String> methods = ['GET', 'POST', 'PUT', 'DELETE'];
-  final List<ApiTestData> logs = NetworkLogManager().logs;
+  final logs = NetworkLogManager().logs;
 
   @override
   Widget build(BuildContext context) {
