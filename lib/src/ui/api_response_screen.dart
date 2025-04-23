@@ -17,36 +17,24 @@ class ApiResponseScreen extends StatefulWidget {
 class _ApiResponseScreenState extends State<ApiResponseScreen> {
   bool prettifyJson = true;
   final TextEditingController _controller = TextEditingController();
-  String searchKey = '';
-@override
+  String searchKey = '';@override
 Widget build(BuildContext context) {
   final rawResponse = widget.api.responseBody ?? '';
   String responseText = '';
   dynamic decodedJson;
 
-  // Try parsing only once if response is not empty
-  if (rawResponse.isNotEmpty) {
+  if (searchKey.trim().isNotEmpty) {
     try {
       decodedJson = JsonPrettifier.decodeJson(rawResponse);
+      final result = _searchInJson(decodedJson, searchKey.trim());
+      responseText = result ?? 'Key not found in JSON.';
     } catch (e) {
-      decodedJson = null;
+      responseText = 'Invalid JSON response.';
     }
-  }
-
-  // Decide what to show based on the input
-  if (searchKey.trim().isEmpty) {
-    // No filter key, just show raw/prettified
+  } else {
     responseText = prettifyJson
         ? JsonPrettifier.pretty(rawResponse)
         : rawResponse;
-  } else {
-    // Try searching the key in the parsed JSON
-    if (decodedJson != null) {
-      final result = _searchInJson(decodedJson, searchKey.trim());
-      responseText = result ?? 'Key not found in JSON.';
-    } else {
-      responseText = 'Invalid JSON response.';
-    }
   }
 
   return Scaffold(
@@ -111,6 +99,7 @@ Widget build(BuildContext context) {
     ),
   );
 }
+
 
 
   /// 🔁 Recursively search for a key in a nested JSON
