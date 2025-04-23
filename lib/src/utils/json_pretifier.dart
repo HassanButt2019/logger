@@ -12,4 +12,7 @@ class JsonPrettifier {
       return rawJson; // Return original if not valid JSON
     }
   }
+    static dynamic decodeJson(String input) {
+    return jsonDecode(input); // Use this to get the actual Map or List
+  }
 }
