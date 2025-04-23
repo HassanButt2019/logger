@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/json_pretifier.dart';
 import '../models/api_test_data.dart';// lib/src/ui/api_response_screen.dart
+// lib/src/ui/api_response_screen.dart
 
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
@@ -12,6 +13,7 @@ class ApiResponseScreen extends StatefulWidget {
   @override
   State<ApiResponseScreen> createState() => _ApiResponseScreenState();
 }
+
 class _ApiResponseScreenState extends State<ApiResponseScreen> {
   bool prettifyJson = true;
   final TextEditingController _controller = TextEditingController();
@@ -33,13 +35,11 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
       responseText = prettifyJson
           ? JsonPrettifier.pretty(rawResponse)
           : rawResponse;
-    } else if (json != null && json is Map<String, dynamic> && json.containsKey(searchKey.trim())) {
-      final value = json[searchKey.trim()];
-      responseText = value is String || value is num || value is bool
-          ? value.toString()
-          : JsonPrettifier.pretty(value);
+    } else if (json != null) {
+      final result = _searchInJson(json, searchKey.trim());
+      responseText = result ?? 'Key not found in JSON.';
     } else {
-      responseText = 'Key not found or invalid JSON.';
+      responseText = 'Invalid JSON response.';
     }
 
     return Scaffold(
@@ -103,6 +103,26 @@ class _ApiResponseScreenState extends State<ApiResponseScreen> {
         ),
       ),
     );
+  }
+
+  /// 🔁 Recursively search for a key in a nested JSON
+  String? _searchInJson(dynamic json, String key) {
+    if (json is Map<String, dynamic>) {
+      for (var k in json.keys) {
+        if (k.toLowerCase().contains(key.toLowerCase())) {
+          return JsonPrettifier.pretty(json[k]);
+        } else {
+          final result = _searchInJson(json[k], key);
+          if (result != null) return result;
+        }
+      }
+    } else if (json is List) {
+      for (var item in json) {
+        final result = _searchInJson(item, key);
+        if (result != null) return result;
+      }
+    }
+    return null;
   }
 
   @override
