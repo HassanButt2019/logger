@@ -17,7 +17,9 @@ class ApiResponseScreen extends StatefulWidget {
 class _ApiResponseScreenState extends State<ApiResponseScreen> {
   bool prettifyJson = true;
   final TextEditingController _controller = TextEditingController();
-  String searchKey = '';@override
+  String searchKey = '';  bool _showSearch = false;
+
+  @override
 Widget build(BuildContext context) {
   final rawResponse = widget.api.responseBody ?? '';
   String responseText = '';
@@ -72,6 +74,7 @@ Widget build(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+       
           Text('URL: ${widget.api.url}', style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Text('Method: ${widget.api.method}'),
@@ -80,16 +83,61 @@ Widget build(BuildContext context) {
           const SizedBox(height: 8),
           Text('Timestamp: ${widget.api.timestamp}'),
           const SizedBox(height: 16),
-          const Text('Filter Key:', style: TextStyle(fontWeight: FontWeight.bold)),
-          TextField(
             controller: _controller,
-            decoration: const InputDecoration(hintText: 'Enter key to search...'),
-            onChanged: (value) {
-              setState(() {
-                searchKey = value;
-              });
-            },
-          ),
+        Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    const Text('Filter Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+    IconButton(
+      icon: Icon(_showSearch ? Icons.close : Icons.search),
+      onPressed: () {
+        setState(() {
+          _showSearch = !_showSearch;
+          if (!_showSearch) {
+            _controller.clear();
+            searchKey = '';
+          }
+        });
+      },
+    ),
+  ],
+),
+AnimatedSwitcher(
+  duration: const Duration(milliseconds: 300),
+  transitionBuilder: (Widget child, Animation<double> animation) {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0.0, -0.2),
+        end: Offset.zero,
+      ).animate(animation),
+      child: FadeTransition(opacity: animation, child: child),
+    );
+  },
+  child: _showSearch
+      ? Column(
+          key: const ValueKey('searchField'),
+          children: [
+            const SizedBox(height: 8),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                hintText: 'Enter key to search...',
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchKey = value;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        )
+      : const SizedBox.shrink(key: ValueKey('empty')),
+),
+
           const SizedBox(height: 16),
           const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
@@ -107,7 +155,7 @@ Widget build(BuildContext context) {
     if (json is Map<String, dynamic>) {
       for (var k in json.keys) {
         if (k.toLowerCase().contains(key.toLowerCase())) {
-          return JsonPrettifier.pretty(json[k]);
+          return '$k: ${JsonPrettifier.pretty(json[k].toString())}';
         } else {
           final result = _searchInJson(json[k], key);
           if (result != null) return result;
