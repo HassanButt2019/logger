@@ -83,7 +83,6 @@ Widget build(BuildContext context) {
           const SizedBox(height: 8),
           Text('Timestamp: ${widget.api.timestamp}'),
           const SizedBox(height: 16),
-            controller: _controller,
         Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
