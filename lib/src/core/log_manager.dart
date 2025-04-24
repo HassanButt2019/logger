@@ -14,4 +14,7 @@ class NetworkLogManager {
   }
 
   List<ApiTestData> get logs => List.unmodifiable(_logs);
+  void clear() {
+    _logs.clear();
+  }
 }

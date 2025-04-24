@@ -35,6 +35,17 @@ class _ApiListScreenState extends State<ApiListScreen> {
       appBar: AppBar(
         title: const Text('API Logs'),
         backgroundColor: Colors.deepPurple,
+          actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            tooltip: 'Clear Logs',
+            onPressed: () {
+              setState(() {
+                NetworkLogManager().clear(); // clear logs
+              });
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
