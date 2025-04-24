@@ -45,7 +45,6 @@ Widget build(BuildContext context) {
       actions: [
         Row(
           children: [
-            const Text("Prettify"),
             Switch(
               value: prettifyJson,
               onChanged: (value) {

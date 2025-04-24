@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:logger/src/utils/utils.dart';
 import '../core/log_manager.dart';
 import 'api_response_screen.dart';
@@ -14,7 +15,7 @@ class _ApiListScreenState extends State<ApiListScreen> {
   String searchQuery = '';
   String? selectedMethod;
   final List<String> methods = ['GET', 'POST', 'PUT', 'DELETE'];
-  final logs = NetworkLogManager().logs;
+  List<ApiTestData>  logs = NetworkLogManager().logs;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class _ApiListScreenState extends State<ApiListScreen> {
             onPressed: () {
               setState(() {
                 NetworkLogManager().clear(); // clear logs
+                logs = NetworkLogManager().logs;
               });
             },
           ),
