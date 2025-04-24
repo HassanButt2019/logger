@@ -37,24 +37,25 @@ class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
         child: _buildButton(),
       ),
     );
-  }
-Widget _buildButton() {
-  final currentRoute = ModalRoute.of(context);
+  }bool isOnApiListScreen = false;
 
+Widget _buildButton() {
   return FloatingActionButton(
     backgroundColor: Colors.deepPurple,
     onPressed: () {
-      if (currentRoute?.settings.name != 'ApiListScreen') {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const ApiListScreen(),
-            settings: const RouteSettings(name: 'ApiListScreen'),
-          ),
-        );
+      if (!isOnApiListScreen) {
+        isOnApiListScreen = true;
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const ApiListScreen()))
+            .then((_) {
+          isOnApiListScreen = false; // Reset when user returns
+        });
       }
     },
     child: const Icon(Icons.api),
   );
 }
+
 
 }
