@@ -139,7 +139,7 @@ AnimatedSwitcher(
           const SizedBox(height: 16),
           const Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          SelectableText(responseText),
+          SelectableText(JsonPrettifier.pretty(responseText)),
         ],
       ),
     ),
