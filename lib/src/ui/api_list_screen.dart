@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:logger/src/utils/utils.dart';
 import '../core/log_manager.dart';
 import 'api_response_screen.dart';
-
+import 'profiler_timeline_screen.dart';
 class ApiListScreen extends StatefulWidget {
   const ApiListScreen({super.key});
 
@@ -45,9 +45,9 @@ class _ApiListScreenState extends State<ApiListScreen> {
                 NetworkLogManager().clear(); // clear logs
                 logs = NetworkLogManager().logs;
               });
-            },
-          ),
-        ],
+            }
+            )
+            ],
       ),
       body: Column(
         children: [

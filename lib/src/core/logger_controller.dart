@@ -1,5 +1,4 @@
 import 'dart:async';
-import '../models/api_test_data.dart';
 import 'log_manager.dart';
 
 /// A controller that manages real-time log updates via stream.

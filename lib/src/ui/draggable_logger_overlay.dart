@@ -37,25 +37,17 @@ class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
         child: _buildButton(),
       ),
     );
-  }bool isOnApiListScreen = false;
+  }
 
-Widget _buildButton() {
-  return FloatingActionButton(
-    backgroundColor: Colors.deepPurple,
-    onPressed: () {
-      if (!isOnApiListScreen) {
-        isOnApiListScreen = true;
-
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const ApiListScreen()))
-            .then((_) {
-          isOnApiListScreen = false; // Reset when user returns
-        });
-      }
-    },
-    child: const Icon(Icons.api),
-  );
-}
-
-
+  Widget _buildButton() {
+    return FloatingActionButton(
+      backgroundColor: Colors.indigo,
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const ApiListScreen()),
+        );
+      },
+      child: const Icon(Icons.api),
+    );
+  }
 }
