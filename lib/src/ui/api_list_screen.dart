@@ -24,7 +24,7 @@ class _ApiListScreenState extends State<ApiListScreen> {
           log.url.toLowerCase().contains(searchQuery.toLowerCase()) ||
           (log.responseBody?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
       return matchesMethod && matchesQuery;
-    }).toList();
+    }).toList()..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     return Scaffold(
       appBar: AppBar(
