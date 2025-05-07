@@ -15,13 +15,24 @@ class _DraggableLoggerButton extends StatefulWidget {
   @override
   State<_DraggableLoggerButton> createState() => _DraggableLoggerButtonState();
 }
-
 class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
   double top = 100;
   double left = 20;
 
+  bool get _shouldHideButton {
+    final route = ModalRoute.of(context);
+    final widget = route?.settings.name;
+    
+    // Or do a more robust type check
+    return context.widget.runtimeType == ApiListScreen;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_shouldHideButton) {
+      return const SizedBox.shrink(); // Hide when on ApiListScreen
+    }
+
     return Positioned(
       top: top,
       left: left,
