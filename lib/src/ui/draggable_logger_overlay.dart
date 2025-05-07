@@ -15,24 +15,13 @@ class _DraggableLoggerButton extends StatefulWidget {
   @override
   State<_DraggableLoggerButton> createState() => _DraggableLoggerButtonState();
 }
+
 class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
   double top = 100;
   double left = 20;
-
-  bool get _shouldHideButton {
-    final route = ModalRoute.of(context);
-    final widget = route?.settings.name;
-    
-    // Or do a more robust type check
-    return context.widget.runtimeType == ApiListScreen;
-  }
-
+bool isOnApiListScreen = false;
   @override
   Widget build(BuildContext context) {
-    if (_shouldHideButton) {
-      return const SizedBox.shrink(); // Hide when on ApiListScreen
-    }
-
     return Positioned(
       top: top,
       left: left,
@@ -50,15 +39,25 @@ class _DraggableLoggerButtonState extends State<_DraggableLoggerButton> {
     );
   }
 
-  Widget _buildButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.indigo,
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const ApiListScreen()),
-        );
-      },
-      child: const Icon(Icons.api),
-    );
-  }
+
+
+Widget _buildButton() {
+  return FloatingActionButton(
+    backgroundColor: Colors.deepPurple,
+    onPressed: () {
+      if (!isOnApiListScreen) {
+        isOnApiListScreen = true;
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const ApiListScreen()))
+            .then((_) {
+          isOnApiListScreen = false; // Reset when user returns
+        });
+      }
+    },
+    child: const Icon(Icons.api),
+  );
+}
+
+
 }
