@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import '../utils/json_pretifier.dart';
-
+import '../core/log_manager.dart';
 class ApiResponseScreen extends StatefulWidget {
   final ApiTestData api;
 

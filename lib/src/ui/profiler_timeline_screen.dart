@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core//log_manager.dart';
+import '../core/log_manager.dart';
 import 'api_response_screen.dart';
 
 class ProfilerTimelineScreen extends StatelessWidget {
