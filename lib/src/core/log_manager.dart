@@ -1,5 +1,3 @@
-import '../models/api_test_data.dart';
-
 class NetworkLogManager {
   static final NetworkLogManager _instance = NetworkLogManager._internal();
 

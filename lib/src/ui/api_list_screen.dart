@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:logger/src/utils/utils.dart';
 import '../core/log_manager.dart';
 import 'api_response_screen.dart';
-import 'profiler_timeline_screen.dart';
+import '../utils/utils.dart';
 class ApiListScreen extends StatefulWidget {
   const ApiListScreen({super.key});
 
